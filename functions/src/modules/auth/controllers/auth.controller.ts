@@ -1,35 +1,38 @@
 import { Request, Response } from 'express'
+import UserService from '../../users/services/user.service'
 import AuthService from '../services/auth.service'
 
 class AuthController {
   private readonly authService: AuthService
+  private readonly userService: UserService
 
-  constructor(authService: AuthService) {
+  constructor(authService: AuthService, userService: UserService) {
     this.authService = authService
+    this.userService = userService
+    this.login = this.login.bind(this)
   }
 
-  public login(req: Request, res: Response): void {
-    const { username } = req.body
-    const token = this.authService.generateToken({ username })
-    res.json({ message: 'Login successful', token })
-  }
+  public async login(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body
 
-  public verifyToken(req: Request, res: Response): void {
-    const token = req.headers['authorization']
-    if (!token) {
-      res.status(401).send('Token not provided')
-      return
+      // Verify if the user exists
+      const userExists = await this.userService.userExists(email)
+      if (!userExists) {
+        throw new Error('User not found')
+      }
+
+      // Generate token if user exists
+      const token = this.authService.generateToken({ email })
+      res.status(200).json({ message: 'Login successful', token })
+    } catch (error) {
+      res.status(500).json({ message: error })
     }
-    const decoded = this.authService.verifyToken(token)
-    if (!decoded) {
-      res.status(401).send('Invalid token')
-      return
-    }
-    res.json({ message: 'Token is valid', decoded })
   }
 }
 
+const userService = new UserService()
 const authService = new AuthService(process.env.SECRET_KEY ?? '')
-const authController = new AuthController(authService)
+const authController = new AuthController(authService, userService)
 
 export default authController

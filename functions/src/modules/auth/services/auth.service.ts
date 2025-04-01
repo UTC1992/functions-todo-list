@@ -1,4 +1,4 @@
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 class AuthService {
   private readonly secretKey: string
@@ -8,17 +8,8 @@ class AuthService {
   }
 
   // Método para generar un token
-  public generateToken(payload: object): string {
+  public generateToken(payload: { email: string }): string {
     return jwt.sign(payload, this.secretKey, { expiresIn: '1h' })
-  }
-
-  // Método para verificar un token
-  public verifyToken(token: string): string | JwtPayload | null {
-    try {
-      return jwt.verify(token, this.secretKey)
-    } catch (error) {
-      return null
-    }
   }
 }
 
