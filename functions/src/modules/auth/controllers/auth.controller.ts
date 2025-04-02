@@ -26,6 +26,7 @@ class AuthController {
       const token = this.authService.generateToken({ email })
       res.status(200).json({ message: 'Login successful', token })
     } catch (error) {
+      console.log(error)
       res.status(500).json({ message: error })
     }
   }

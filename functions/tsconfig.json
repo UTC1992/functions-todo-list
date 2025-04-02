@@ -9,12 +9,21 @@
     "sourceMap": true,
     "strict": true,
     "target": "ESNext",
-    "rootDir": "src"
+    "rootDir": "src",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types"
+    ]
   },
   "compileOnSave": true,
   "include": [
     "src/**/*",
     "tsconfig.json",
     "tsconfig.dev.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib"
   ]
 }

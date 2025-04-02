@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 const secretKey = process.env.JWT_SECRET ?? ''
 
-export const authenticateToken = (
+export const validateToken = (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -16,14 +16,13 @@ export const authenticateToken = (
     return
   }
 
-  jwt.verify(token, secretKey, (err, user) => {
+  jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
       res.status(403).json({ message: 'Invalid token' })
       return
     }
 
-    console.log('User authenticated:', user)
-    req.body.user = user
+    req.user = decoded
     next()
   })
 }
