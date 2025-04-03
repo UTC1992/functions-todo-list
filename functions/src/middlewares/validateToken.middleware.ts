@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { env } from '../config/env'
 
-const secretKey = env.JWT_SECRET.value()
+const secretKey = env.JWT_SECRET
 
 export const validateToken = (
   req: Request,

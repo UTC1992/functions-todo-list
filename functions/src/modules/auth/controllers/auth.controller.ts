@@ -33,7 +33,7 @@ class AuthController {
   }
 }
 
-const secretKey = env.JWT_SECRET.value()
+const secretKey = env.JWT_SECRET
 const userService = new UserService()
 const authService = new AuthService(secretKey)
 const authController = new AuthController(authService, userService)
