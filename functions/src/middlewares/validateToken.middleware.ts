@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
+import { env } from '../config/env'
 
-const secretKey = process.env.JWT_SECRET ?? ''
+const secretKey = env.JWT_SECRET.value()
 
 export const validateToken = (
   req: Request,
@@ -18,7 +19,7 @@ export const validateToken = (
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      res.status(403).json({ message: 'Invalid token' })
+      res.status(403).json({ message: 'Invalid token', error: secretKey })
       return
     }
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import UserService from '../../users/services/user.service'
 import AuthService from '../services/auth.service'
+import { env } from '../../../config/env'
 
 class AuthController {
   private readonly authService: AuthService
@@ -32,8 +33,9 @@ class AuthController {
   }
 }
 
+const secretKey = env.JWT_SECRET.value()
 const userService = new UserService()
-const authService = new AuthService(process.env.SECRET_KEY ?? '')
+const authService = new AuthService(secretKey)
 const authController = new AuthController(authService, userService)
 
 export default authController
