@@ -5,5 +5,5 @@
 ### Pasos para arrancar
 * instalar dependencias yarn install o npm install
 * cd functions
-* instalar dependencias yarn install o npm intall
+* instalar dependencias yarn install o npm install
 * yarn serve
